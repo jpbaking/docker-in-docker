@@ -1,10 +1,14 @@
-ARG BASE_VERSION
+ARG BASE_VERSION='18.04'
 FROM ubuntu:${BASE_VERSION}
+
+ARG APT_UBUNTU_ARCHIVE='http://archive.ubuntu.com/ubuntu'
+ARG APT_UBUNTU_SECURITY='http://security.ubuntu.com/ubuntu'
+ARG APT_DOCKER_CE='https://download.docker.com/linux/ubuntu'
 
 # upgrade & install, of course
 RUN set -xv; \
-    sed 's@http://archive.ubuntu.com/ubuntu@http://192.168.56.107/repository/public-apt-proxy-archive.ubuntu.com@g' -i /etc/apt/sources.list && \
-    sed 's@http://security.ubuntu.com/ubuntu/@http://192.168.56.107/repository/public-apt-proxy-security.ubuntu.com/@g' -i /etc/apt/sources.list && \
+    sed "s@http://archive.ubuntu.com/ubuntu@${APT_UBUNTU_ARCHIVE}@g" -i /etc/apt/sources.list && \
+    sed "s@http://security.ubuntu.com/ubuntu/@${APT_UBUNTU_SECURITY}@g" -i /etc/apt/sources.list && \
     apt-get update --fix-missing && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -19,14 +23,14 @@ RUN set -xv; \
         iotop nload stress && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository --update \
-        "deb [arch=amd64] http://192.168.56.107/repository/public-apt-proxy-download.docker.com \
+        "deb [arch=amd64] ${APT_DOCKER_CE} \
         $(lsb_release -cs) \
         stable" && \
     apt-get install -y \
         docker-ce docker-ce-cli containerd.io && \
-    sed 's@http://192.168.56.107/repository/public-apt-proxy-archive.ubuntu.com@http://archive.ubuntu.com/ubuntu@g' -i /etc/apt/sources.list && \
-    sed 's@http://192.168.56.107/repository/public-apt-proxy-security.ubuntu.com/@http://security.ubuntu.com/ubuntu/@g' -i /etc/apt/sources.list && \
-    sed 's@http://192.168.56.107/repository/public-apt-proxy-download.docker.com@https://download.docker.com/linux/ubuntu@g' -i /etc/apt/sources.list && \
+    sed "s@${APT_UBUNTU_ARCHIVE}@http://archive.ubuntu.com/ubuntu@g" -i /etc/apt/sources.list && \
+    sed "s@${APT_UBUNTU_SECURITY}@http://security.ubuntu.com/ubuntu/@g" -i /etc/apt/sources.list && \
+    sed "s@${APT_DOCKER_CE}@https://download.docker.com/linux/ubuntu@g" -i /etc/apt/sources.list && \
     rm -rf /var/lib/apt/lists/* && \
     locale-gen en_US.UTF-8 && \
     curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" \
