@@ -12,6 +12,7 @@ docker build \
     --build-arg "APT_UBUNTU_ARCHIVE=http://192.168.56.107/repository/public-apt-proxy-archive.ubuntu.com" \
     --build-arg "APT_UBUNTU_SECURITY=http://192.168.56.107/repository/public-apt-proxy-security.ubuntu.com/" \
     --build-arg "APT_DOCKER_CE=http://192.168.56.107/repository/public-apt-proxy-download.docker.com" \
+    --build-arg "PYPI_URL=http://192.168.56.107/repository/public-pypi-group" \
     -t ${TAG}:ubuntu-${BASE_VERSION} \
     -t ${TAG}:ubuntu-${BASE_SHORT_VERSION} \
     -t ${TAG}:ubuntu-latest \
