@@ -2,14 +2,15 @@
 
 Very similar to official Docker "dind" (https://hub.docker.com/_/docker). But with the following included:
 
-  1) OpenSSH Client & Server
-  1) Amazon Web Services (AWS) CLI
-  1) AWS Elastic Kubernetes Service (EKS) CLI
-  1) Helm w/ Tiller _(binaries)_
-  1) Python 2 & 3 (w/ pip & pip3)
-  1) Homebrew (linuxbrew) _[link](https://docs.brew.sh/Homebrew-on-Linux)_
-  1) SDKMAN! _[link](https://sdkman.io/)_
-  1) _etc._
+* OpenSSH Client & Server
+* Amazon Web Services (AWS) CLI
+* AWS Elastic Kubernetes Service (EKS) CLI
+* Helm w/ Tiller _(binaries)_
+* Python 2 & 3 (w/ pip & pip3)
+* Homebrew (linuxbrew) _[link](https://docs.brew.sh/Homebrew-on-Linux)_
+* SDKMAN! _[link](https://sdkman.io/)_
+
+And many more! :D
 
 # How to use?
 
@@ -24,6 +25,10 @@ The container and volume/s will be deleted soon as you exit (from bash).
 ## As a Service/Server
 
 This can serve as isolated environment for developers.
+
+[![VideoDemo](https://i.imgur.com/cM0SJrt.png)](https://www.youtube.com/watch?v=wPr0K4Zw7k4)
+
+Watch the demonstration: [https://www.youtube.com/watch?v=wPr0K4Zw7k4](https://www.youtube.com/watch?v=wPr0K4Zw7k4)
 
 ### First, docker run
 
@@ -54,3 +59,23 @@ ssh -p 22222 ubuntu@127.0.0.1
 ```
 
 You may even login to it remotely! Just replace localhost (127.0.0.1) with your docker host's IP/s.
+
+# Volumes/Persistence
+
+```bash
+docker run --name the-dind --publish 22222:22 \
+    --volume ${HOME}/.docker-in-docker:/var/lib/docker \
+    --detach --privileged jpbaking/docker-in-docker
+```
+
+Just be sure to mount `/var/lib/docker` to something.
+
+# License
+
+Copyright 2019 Joseph Baking (josephbaking.ph@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
